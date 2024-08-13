@@ -1,54 +1,48 @@
 import { useEffect, useState } from "react";
 
 import productsApi from "apis/products";
-import { Typography, Spinner } from "neetoui";
+import { Header, PageLoader, PageNotFound } from "components/commons";
+import { Typography } from "neetoui";
 import { isNotNil, append } from "ramda";
+import { useParams } from "react-router-dom";
 
 import Carousel from "./Carousel";
 
 const Product = () => {
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
-  const fetchProduct = async () => {
-    try {
-      const product = await productsApi.show();
-      setProduct(product);
-    } catch (error) {
-      console.log("An error occurred:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [isError, setIsError] = useState(false);
+  const { slug } = useParams();
 
   useEffect(() => {
     fetchProduct();
   }, []);
+
+  const fetchProduct = async () => {
+    try {
+      const product = await productsApi.show(slug);
+      setProduct(product);
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const { name, description, mrp, offerPrice, imageUrls, imageUrl } = product;
   const totalDiscounts = mrp - offerPrice;
   const discountPercentage = ((totalDiscounts / mrp) * 100).toFixed(1);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <Spinner />
-      </div>
-    );
+    return <PageLoader />;
   }
+
+  if (isError) return <PageNotFound />;
 
   return (
     <div className="px-6 pb-6">
       <div>
-        <Typography
-          className="py-2 text-4xl font-semibold"
-          component="blockquote"
-          style="h1"
-          weight="bold"
-        >
-          {name}
-        </Typography>
-        <hr className="border-2 border-black" />
+        <Header title={name} />
       </div>
       <div className="mt-6 flex gap-4">
         <div className="w-2/5">

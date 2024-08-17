@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 
-import { NoData, Toastr, isEmpty } from "@bigbinary/neetoui";
+import { NoData, Toastr } from "@bigbinary/neetoui";
 import productsApi from "apis/products";
 import { PageLoader } from "components/commons";
 import Header from "components/commons/Header";
 import { MRP, OFFER_PRICE } from "components/constants";
 import { cartTotalOf } from "components/utils";
-import { keys } from "ramda";
+import { keys, isEmpty } from "ramda";
 import useCartItemsStore from "stores/useCartItemsStore";
 
 import PriceCard from "./PriceCard";
 import ProductCard from "./ProductCard";
 
 const Cart = () => {
-  const { cartItems, setSelectedQuantity } = useCartItemsStore();
+  // const { cartItems, setSelectedQuantity } = useCartItemsStore();
+  const { cartItems, setSelectedQuantity } = useCartItemsStore.pick();
   const slugs = keys(cartItems);
 
   const [products, setProducts] = useState([]);

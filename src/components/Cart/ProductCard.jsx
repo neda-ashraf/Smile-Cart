@@ -3,7 +3,6 @@ import { useState } from "react";
 import ProductQuantity from "components/commons/ProductQuantity";
 import { Delete } from "neetoicons";
 import { Typography, Alert } from "neetoui";
-import { prop } from "ramda";
 import useCartItemsStore from "stores/useCartItemsStore";
 
 const ProductCard = ({
@@ -14,7 +13,9 @@ const ProductCard = ({
   name,
   availableQuantity,
 }) => {
-  const removeCartItem = useCartItemsStore(prop("removeCartItem"));
+  // const removeCartItem = useCartItemsStore(prop("removeCartItem"));
+  const removeCartItem = useCartItemsStore.pickFrom(); //using babel plugins
+
   const [shouldShowDeleteAlert, setShouldShowDeleteAlert] = useState(false);
 
   return (

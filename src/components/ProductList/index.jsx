@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import productsApi from "apis/products";
 import { Header, PageLoader } from "components/commons";
 import AddToCart from "components/commons/AddToCart";
+import { useFetchProducts } from "hooks/reactQuery/useProductsApi";
 import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input, NoData } from "neetoui";
@@ -11,42 +11,36 @@ import { isEmpty } from "ramda";
 import ProductListItem from "./ProductListItem";
 
 const ProductList = ({ slug }) => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [products, setProducts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
   const [searchKey, setSearchKey] = useState("");
   const debouncedSearchKey = useDebounce(searchKey);
 
   // const [cartItems, setCartItems] = useState([]);
+  const { data: { products = [] } = {}, isLoading } = useFetchProducts({
+    searchTerm: debouncedSearchKey,
+  });
 
-  const fetchProducts = async () => {
-    try {
-      // const data = await productsApi.fetch({ searchTerm: searchKey });
-      // setProducts(data.products);
-      const data = await productsApi.fetch({
-        searchTerm: debouncedSearchKey,
-      });
-      setProducts(data.products);
-    } catch (error) {
-      console.log("An error occurred:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const fetchProducts = async () => {
+  //   try {
+  //     const data = await productsApi.fetch({
+  //       searchTerm: debouncedSearchKey,
+  //     });
+  //     setProducts(data.products);
+  //   } catch (error) {
+  //     console.log("An error occurred:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchProducts();
-  }, [debouncedSearchKey]);
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [debouncedSearchKey]);
 
   if (isLoading) {
     return <PageLoader />;
   }
-
-  // const toggleIsInCart = slug =>
-  //   setCartItems(prevCartItems =>
-  //     prevCartItems.includes(slug)
-  //       ? without([slug], cartItems)
-  //       : [slug, ...cartItems]
-  //   );
 
   return (
     <div className="flex h-screen flex-col">

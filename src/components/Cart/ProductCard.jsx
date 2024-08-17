@@ -11,7 +11,7 @@ const ProductCard = ({
   offerPrice,
   mrp,
   name,
-  availableQuantity,
+  // availableQuantity,
 }) => {
   // const removeCartItem = useCartItemsStore(prop("removeCartItem"));
   const removeCartItem = useCartItemsStore.pickFrom(); //using babel plugins
@@ -30,7 +30,7 @@ const ProductCard = ({
           <Typography style="body2">Offer price: ${offerPrice}</Typography>
         </div>
         <div className="flex items-center space-x-2">
-          <ProductQuantity {...{ availableQuantity, slug }} />
+          <ProductQuantity {...{ slug }} />
           <Delete
             className="cursor-pointer"
             onClick={() => setShouldShowDeleteAlert(true)}

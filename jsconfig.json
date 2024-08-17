@@ -95,6 +95,6 @@
     "./**/*.js",
     "./**/*.jsx",
     "./**/*.d.ts",
-    "src/components/constants"
+    "src/components/constants.js"
   ]
 }

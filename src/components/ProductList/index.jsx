@@ -5,9 +5,10 @@ import AddToCart from "components/commons/AddToCart";
 import { useFetchProducts } from "hooks/reactQuery/useProductsApi";
 import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
-import { Input, NoData } from "neetoui";
+import { Input, NoData, Pagination } from "neetoui";
 import { isEmpty } from "ramda";
 
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from "./constants";
 import ProductListItem from "./ProductListItem";
 
 const ProductList = ({ slug }) => {
@@ -15,11 +16,18 @@ const ProductList = ({ slug }) => {
   // const [isLoading, setIsLoading] = useState(true);
   const [searchKey, setSearchKey] = useState("");
   const debouncedSearchKey = useDebounce(searchKey);
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE_INDEX);
 
   // const [cartItems, setCartItems] = useState([]);
-  const { data: { products = [] } = {}, isLoading } = useFetchProducts({
+
+  const productsParams = {
     searchTerm: debouncedSearchKey,
-  });
+    page: currentPage,
+    pageSize: DEFAULT_PAGE_SIZE,
+  };
+
+  const { data: { products = [], totalProductsCount } = {}, isLoading } =
+    useFetchProducts(productsParams);
 
   // const fetchProducts = async () => {
   //   try {
@@ -55,7 +63,10 @@ const ProductList = ({ slug }) => {
               prefix={<Search />}
               type="search"
               value={searchKey}
-              onChange={event => setSearchKey(event.target.value)}
+              onChange={e => {
+                setSearchKey(e.target.value);
+                setCurrentPage(DEFAULT_PAGE_INDEX);
+              }}
             />
           }
         />
@@ -77,6 +88,14 @@ const ProductList = ({ slug }) => {
           ))}
         </div>
       )}
+      <div className="mb-5 self-end">
+        <Pagination
+          count={totalProductsCount}
+          navigate={page => setCurrentPage(page)}
+          pageNo={currentPage || DEFAULT_PAGE_INDEX}
+          pageSize={DEFAULT_PAGE_SIZE}
+        />
+      </div>
     </div>
   );
 };

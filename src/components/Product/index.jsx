@@ -2,8 +2,8 @@
 
 import { Header, PageLoader, PageNotFound } from "components/commons";
 import AddToCart from "components/commons/AddToCart";
+import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import { useShowProduct } from "hooks/reactQuery/useProductsApi";
-import useSelectedQuantity from "hooks/useSelectedQuantity";
 import { Typography, Button } from "neetoui";
 import { isNotNil } from "ramda";
 import { useParams } from "react-router-dom";

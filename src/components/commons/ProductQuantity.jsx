@@ -2,8 +2,8 @@ import { useRef } from "react";
 
 import { TooltipWrapper } from "components/commons";
 import { VALID_COUNT_REGEX } from "components/constants";
+import useSelectedQuantity from "components/hooks/useSelectedQuantity";
 import { useShowProduct } from "hooks/reactQuery/useProductsApi";
-import useSelectedQuantity from "hooks/useSelectedQuantity";
 import { Input, Button, Toastr } from "neetoui";
 
 const ProductQuantity = ({ slug }) => {

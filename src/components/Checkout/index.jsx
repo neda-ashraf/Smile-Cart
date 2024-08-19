@@ -14,7 +14,7 @@ import { isEmpty, keys } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
-import { useCartItemsStore, cartItems } from "stores/useCartItemsStore";
+import useCartItemsStore from "stores/useCartItemsStore";
 import { setToLocalStorage, getFromLocalStorage } from "utils/storage";
 import withTitle from "utils/withTitle";
 
@@ -35,7 +35,7 @@ const Checkout = () => {
   const checkboxRef = useRef(null);
   const history = useHistory();
 
-  const clearCart = useCartItemsStore.pickFrom();
+  const { cartItems, clearCart } = useCartItemsStore.pick();
   const checkoutFormData = getFromLocalStorage(CHECKOUT_LOCAL_STORAGE_KEY);
 
   const { isLoading: isLoadingProducts } = useFetchCartProducts(
